@@ -1,7 +1,7 @@
 Summary:   GLib wrapper around libusb1
 Name:      libgusb
 Version:   0.1.6
-Release:   1%{?dist}
+Release:   3%{?dist}
 License:   LGPLv2+
 URL:       https://gitorious.org/gusb/
 Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.xz
@@ -65,6 +65,12 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libgusb.la
 %{_datadir}/vala/vapi/gusb.vapi
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.1.6-3
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.1.6-2
+- Mass rebuild 2013-12-27
+
 * Tue Feb 06 2013 Richard Hughes <richard@hughsie.com> 0.1.6-1
 - New upstream version
 - Do not use deprecated GLib functionality
