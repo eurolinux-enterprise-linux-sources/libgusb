@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GUsbInterface: GUsb Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="GUsb Reference Manual">
+<link rel="up" href="libgusb.html" title="libgusb GObject library">
+<link rel="prev" href="GUsbDeviceList.html" title="GUsbDeviceList">
+<link rel="next" href="libgusb-helpers.html" title="libgusb glib helpers">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#GUsbInterface.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#GUsbInterface.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="libgusb.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="GUsbDeviceList.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="libgusb-helpers.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="GUsbInterface"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="GUsbInterface.top_of_page"></a>GUsbInterface</span></h2>
+<p>GUsbInterface — GLib wrapper around a USB interface.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="GUsbInterface.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-length" title="g_usb_interface_get_length ()">g_usb_interface_get_length</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-kind" title="g_usb_interface_get_kind ()">g_usb_interface_get_kind</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-number" title="g_usb_interface_get_number ()">g_usb_interface_get_number</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-alternate" title="g_usb_interface_get_alternate ()">g_usb_interface_get_alternate</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-class" title="g_usb_interface_get_class ()">g_usb_interface_get_class</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-subclass" title="g_usb_interface_get_subclass ()">g_usb_interface_get_subclass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-protocol" title="g_usb_interface_get_protocol ()">g_usb_interface_get_protocol</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-index" title="g_usb_interface_get_index ()">g_usb_interface_get_index</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="returnvalue">GBytes</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GUsbInterface.html#g-usb-interface-get-extra" title="g_usb_interface_get_extra ()">g_usb_interface_get_extra</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GUsbInterface.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="GUsbInterface.html#GUsbInterface-struct" title="GUsbInterface">GUsbInterface</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GUsbInterface.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> GUsbInterface
+</pre>
+</div>
+<div class="refsect1">
+<a name="GUsbInterface.description"></a><h2>Description</h2>
+<p>This object is a thin glib wrapper around a libusb_interface_descriptor.</p>
+<p>All the data is copied when the object is created and the original
+descriptor can be destoyed any at point.</p>
+</div>
+<div class="refsect1">
+<a name="GUsbInterface.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="g-usb-interface-get-length"></a><h3>g_usb_interface_get_length ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_length (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the USB bus number for the interface.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.2.6"></a><h4>Returns</h4>
+<p> The 8-bit bus number</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-kind"></a><h3>g_usb_interface_get_kind ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_kind (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the type of interface.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.3.6"></a><h4>Returns</h4>
+<p> The 8-bit address</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-number"></a><h3>g_usb_interface_get_number ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_number (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the interface number.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.4.6"></a><h4>Returns</h4>
+<p> The interface ID</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-alternate"></a><h3>g_usb_interface_get_alternate ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_alternate (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the alternate setting for the interface.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.5.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.5.6"></a><h4>Returns</h4>
+<p> alt setting, typically zero.</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-class"></a><h3>g_usb_interface_get_class ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_class (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the interface class, typically a <span class="type">GUsbInterfaceClassCode</span>.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.6.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.6.6"></a><h4>Returns</h4>
+<p> a interface class number, e.g. 0x09 is a USB hub.</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-subclass"></a><h3>g_usb_interface_get_subclass ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_subclass (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the interface subclass qualified by the class number.
+See <a class="link" href="GUsbInterface.html#g-usb-interface-get-class" title="g_usb_interface_get_class ()"><code class="function">g_usb_interface_get_class()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.7.6"></a><h4>Returns</h4>
+<p> a interface subclass number.</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-protocol"></a><h3>g_usb_interface_get_protocol ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_protocol (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the interface protocol qualified by the class and subclass numbers.
+See <a class="link" href="GUsbInterface.html#g-usb-interface-get-class" title="g_usb_interface_get_class ()"><code class="function">g_usb_interface_get_class()</code></a> and <a class="link" href="GUsbInterface.html#g-usb-interface-get-subclass" title="g_usb_interface_get_subclass ()"><code class="function">g_usb_interface_get_subclass()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.8.6"></a><h4>Returns</h4>
+<p> a interface protocol number.</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-index"></a><h3>g_usb_interface_get_index ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+g_usb_interface_get_index (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets the index for the string descriptor.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.9.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.9.6"></a><h4>Returns</h4>
+<p> a string descriptor index.</p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="g-usb-interface-get-extra"></a><h3>g_usb_interface_get_extra ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="returnvalue">GBytes</span></a> *
+g_usb_interface_get_extra (<em class="parameter"><code><a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a> *interface</code></em>);</pre>
+<p>Gets any extra data from the interface.</p>
+<div class="refsect3">
+<a name="id-1.3.7.7.10.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>interface</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GUsbInterface.html" title="GUsbInterface"><span class="type">GUsbInterface</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.7.7.10.6"></a><h4>Returns</h4>
+<p> a <a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> for failure. </p>
+<p><span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span></p>
+</div>
+<p class="since">Since: 0.2.8</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="GUsbInterface.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GUsbInterface-struct"></a><h3>GUsbInterface</h3>
+<pre class="programlisting">typedef struct _GUsbInterface GUsbInterface;</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.24</div>
+</body>
+</html>

@@ -1,15 +1,14 @@
 Summary:   GLib wrapper around libusb1
 Name:      libgusb
-Version:   0.1.6
-Release:   3%{?dist}
+Version:   0.2.9
+Release:   1%{?dist}
 License:   LGPLv2+
 URL:       https://gitorious.org/gusb/
 Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.xz
 
-BuildRequires: glib2-devel >= 2.16.1
+BuildRequires: glib2-devel >= 2.38.0
 BuildRequires: libtool
-BuildRequires: libgudev1-devel
-BuildRequires: libusb1-devel
+BuildRequires: libusb1-devel >= 1.0.19
 BuildRequires: gobject-introspection-devel
 BuildRequires: vala-devel
 BuildRequires: vala-tools
@@ -35,7 +34,6 @@ GLib headers and libraries for gusb.
         --enable-vala=yes               \
         --enable-introspection=yes      \
         --disable-gtk-doc               \
-        --enable-gudev                  \
         --disable-dependency-tracking
 
 make %{?_smp_mflags}
@@ -58,6 +56,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libgusb.la
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/gusb-1
+%{_bindir}/gusbcmd
 %{_libdir}/libgusb.so
 %{_libdir}/pkgconfig/gusb.pc
 %{_datadir}/gtk-doc/html/gusb
@@ -65,6 +64,10 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libgusb.la
 %{_datadir}/vala/vapi/gusb.vapi
 
 %changelog
+* Thu Feb 23 2017 Kalev Lember <klember@redhat.com> - 0.2.9-1
+- Update to 0.2.9
+- Resolves: #1426271
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.1.6-3
 - Mass rebuild 2014-01-24
 

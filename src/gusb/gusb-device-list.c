@@ -1,7 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
  * Copyright (C) 2011 Hans de Goede <hdegoede@redhat.com>
- * Copyright (C) 2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2011-2014 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -30,7 +30,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <gudev/gudev.h>
 #include <libusb-1.0/libusb.h>
 
 #include "gusb-context.h"
@@ -38,8 +37,6 @@
 #include "gusb-device.h"
 #include "gusb-device-list.h"
 #include "gusb-device-private.h"
-
-#define G_USB_DEVICE_LIST_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), G_USB_TYPE_DEVICE_LIST, GUsbDeviceListPrivate))
 
 enum {
 	PROP_0,
@@ -54,42 +51,18 @@ enum
 };
 
 struct _GUsbDeviceListPrivate {
-	GUsbContext	 *context;
-	GUdevClient	 *udev;
-	GPtrArray	 *devices;
-	libusb_device	**coldplug_list;
-	gboolean	  done_coldplug;
+	GUsbContext *context;
 };
-
-static void g_usb_device_list_uevent_cb (GUdevClient	*client,
-					const gchar	*action,
-					GUdevDevice	*udevice,
-					gpointer	 user_data);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GUsbDeviceList, g_usb_device_list, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GUsbDeviceList, g_usb_device_list, G_TYPE_OBJECT);
 
 static void
-g_usb_device_list_finalize (GObject *object)
-{
-	GUsbDeviceList *list = G_USB_DEVICE_LIST (object);
-	GUsbDeviceListPrivate *priv = list->priv;
-
-	g_object_unref (priv->udev);
-	g_ptr_array_unref (priv->devices);
-
-	G_OBJECT_CLASS (g_usb_device_list_parent_class)->finalize (object);
-}
-
-/**
- * g_usb_device_list_get_property:
- **/
-static void
-g_usb_device_list_get_property (GObject		*object,
-				guint		 prop_id,
-				GValue		*value,
-				GParamSpec	*pspec)
+g_usb_device_list_get_property (GObject    *object,
+                                guint       prop_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
 {
 	GUsbDeviceList *list = G_USB_DEVICE_LIST (object);
 	GUsbDeviceListPrivate *priv = list->priv;
@@ -104,14 +77,27 @@ g_usb_device_list_get_property (GObject		*object,
 	}
 }
 
-/**
- * usb_device_list_set_property:
- **/
 static void
-g_usb_device_list_set_property (GObject		*object,
-				guint		 prop_id,
-				const GValue	*value,
-				GParamSpec	*pspec)
+g_usb_device_added_cb (GUsbContext    *context,
+                       GUsbDevice     *device,
+                       GUsbDeviceList *list)
+{
+	g_signal_emit (list, signals[DEVICE_ADDED_SIGNAL], 0, device);
+}
+
+static void
+g_usb_device_removed_cb (GUsbContext    *context,
+                         GUsbDevice     *device,
+                         GUsbDeviceList *list)
+{
+	g_signal_emit (list, signals[DEVICE_REMOVED_SIGNAL], 0, device);
+}
+
+static void
+g_usb_device_list_set_property (GObject      *object,
+                                guint         prop_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
 {
 	GUsbDeviceList *list = G_USB_DEVICE_LIST (object);
 	GUsbDeviceListPrivate *priv = list->priv;
@@ -119,6 +105,10 @@ g_usb_device_list_set_property (GObject		*object,
 	switch (prop_id) {
 	case PROP_CONTEXT:
 		priv->context = g_value_get_object (value);
+		g_signal_connect (priv->context, "device-added",
+				  G_CALLBACK (g_usb_device_added_cb), list);
+		g_signal_connect (priv->context, "device-removed",
+				  G_CALLBACK (g_usb_device_removed_cb), list);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -126,53 +116,12 @@ g_usb_device_list_set_property (GObject		*object,
 	}
 }
 
-static GObject *
-g_usb_device_list_constructor (GType			 gtype,
-			       guint			 n_properties,
-			       GObjectConstructParam	*properties)
-{
-	GObject *obj;
-	GUsbDeviceList *list;
-	GUsbDeviceListPrivate *priv;
-	const gchar *const subsystems[] = {"usb", NULL};
-
-	{
-		/* Always chain up to the parent constructor */
-		GObjectClass *parent_class;
-		parent_class = G_OBJECT_CLASS (g_usb_device_list_parent_class);
-		obj = parent_class->constructor (gtype, n_properties,
-						 properties);
-	}
-
-	list = G_USB_DEVICE_LIST (obj);
-	priv = list->priv;
-
-	if (!priv->context)
-		g_error("constructed without a context");
-
-	priv->udev = g_udev_client_new (subsystems);
-	g_signal_connect (G_OBJECT (priv->udev), "uevent",
-			  G_CALLBACK (g_usb_device_list_uevent_cb), list);
-
-	priv->devices = g_ptr_array_new_with_free_func ((GDestroyNotify)
-							g_object_unref);
-
-	priv->coldplug_list = NULL;
-
-	return obj;
-}
-
-/**
- * g_usb_device_list_class_init:
- **/
 static void
 g_usb_device_list_class_init (GUsbDeviceListClass *klass)
 {
 	GParamSpec *pspec;
-	GObjectClass *object_class = (GObjectClass *) klass;
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	object_class->constructor	= g_usb_device_list_constructor;
-	object_class->finalize		= g_usb_device_list_finalize;
 	object_class->get_property	= g_usb_device_list_get_property;
 	object_class->set_property	= g_usb_device_list_set_property;
 
@@ -189,7 +138,6 @@ g_usb_device_list_class_init (GUsbDeviceListClass *klass)
 	 * GUsbDeviceList::device-added:
 	 * @list: the #GUsbDeviceList instance that emitted the signal
 	 * @device: A #GUsbDevice
-	 * @udev: A #GUdevDevice
 	 *
 	 * This signal is emitted when a USB device is added.
 	 **/
@@ -208,7 +156,6 @@ g_usb_device_list_class_init (GUsbDeviceListClass *klass)
 	 * GUsbDeviceList::device-removed:
 	 * @list: the #GUsbDeviceList instance that emitted the signal
 	 * @device: A #GUsbDevice
-	 * @udev: A #GUdevDevice
 	 *
 	 * This signal is emitted when a USB device is removed.
 	 **/
@@ -222,21 +169,19 @@ g_usb_device_list_class_init (GUsbDeviceListClass *klass)
 			G_TYPE_NONE,
 			1,
 			G_USB_TYPE_DEVICE);
-
-	g_type_class_add_private (klass, sizeof (GUsbDeviceListPrivate));
 }
 
 static void
 g_usb_device_list_init (GUsbDeviceList *list)
 {
-	list->priv = G_USB_DEVICE_LIST_GET_PRIVATE (list);
+	list->priv = g_usb_device_list_get_instance_private (list);
 }
 
 /**
  * g_usb_device_list_get_devices:
  * @list: a #GUsbDeviceList
  *
- * Return value: (transfer full): a new #GPtrArray of #GUsbDevice's.
+ * Return value: (transfer full) (element-type GUsbDevice): a new #GPtrArray of #GUsbDevice's.
  *
  * Since: 0.1.0
  **/
@@ -244,147 +189,22 @@ GPtrArray *
 g_usb_device_list_get_devices (GUsbDeviceList *list)
 {
 	g_return_val_if_fail (G_USB_IS_DEVICE_LIST (list), NULL);
-	return g_ptr_array_ref (list->priv->devices);
-}
 
-static gboolean
-g_usb_device_list_get_bus_n_address (GUdevDevice	*udev,
-				     gint		*bus,
-				     gint		*address)
-{
-	const gchar *bus_str, *address_str;
-
-	*bus = *address = 0;
-
-	bus_str = g_udev_device_get_property (udev, "BUSNUM");
-	address_str = g_udev_device_get_property (udev, "DEVNUM");
-	if (bus_str)
-		*bus = atoi(bus_str);
-	if (address_str)
-		*address = atoi(address_str);
-
-	return *bus && *address;
-}
-
-static gboolean
-g_usb_device_list_add_dev (GUsbDeviceList *list, GUdevDevice *udev)
-{
-	GUsbDeviceListPrivate *priv = list->priv;
-	GUsbDevice *device = NULL;
-	libusb_device **dev_list = NULL;
-	const gchar *devtype, *devclass;
-	gint i, bus, address;
-	libusb_context *ctx = _g_usb_context_get_context (priv->context);
-
-	devtype = g_udev_device_get_property (udev, "DEVTYPE");
-	/* Check if this is a usb device (and not an interface) */
-	if (!devtype || strcmp(devtype, "usb_device"))
-		return FALSE;
-
-	/* Skip hubs */
-	devclass = g_udev_device_get_sysfs_attr(udev, "bDeviceClass");
-	if (!devclass || !strcmp(devclass, "09"))
-		return FALSE;
-
-	if (!g_usb_device_list_get_bus_n_address (udev, &bus, &address)) {
-		g_warning ("usb-device without bus number or device address");
-		return FALSE;
-	}
-
-	if (priv->coldplug_list)
-		dev_list = priv->coldplug_list;
-	else
-		libusb_get_device_list(ctx, &dev_list);
-
-	for (i = 0; dev_list && dev_list[i]; i++) {
-		if (libusb_get_bus_number (dev_list[i]) == bus &&
-		    libusb_get_device_address (dev_list[i]) == address) {
-			device = _g_usb_device_new (priv->context,
-						    dev_list[i],
-						    udev);
-			break;
-		}
-	}
-
-	if (!priv->coldplug_list)
-		libusb_free_device_list (dev_list, 1);
-
-	if (!device) {
-		g_warning ("Could not find usb dev at busnum %d devaddr %d",
-			   bus, address);
-		return FALSE;
-	}
-
-	g_ptr_array_add (priv->devices, device);
-	g_signal_emit (list, signals[DEVICE_ADDED_SIGNAL], 0, device);
-	return TRUE;
-}
-
-static void
-g_usb_device_list_remove_dev (GUsbDeviceList *list, GUdevDevice *udev)
-{
-	GUsbDeviceListPrivate *priv = list->priv;
-	GUsbDevice *device;
-	gint bus, address;
-
-	if (!g_usb_device_list_get_bus_n_address (udev, &bus, &address))
-		return;
-
-	device = g_usb_device_list_find_by_bus_address (list,
-							bus,
-							address,
-							NULL);
-	if (!device)
-		return;
-
-	g_signal_emit (list, signals[DEVICE_REMOVED_SIGNAL], 0, device);
-	g_ptr_array_remove (priv->devices, device);
-}
-
-static void
-g_usb_device_list_uevent_cb (GUdevClient		*client,
-			     const gchar		*action,
-			     GUdevDevice		*udevice,
-			     gpointer			 user_data)
-{
-	GUsbDeviceList *list = G_USB_DEVICE_LIST (user_data);
-
-	if (g_str_equal (action, "add"))
-		g_usb_device_list_add_dev (list, udevice);
-	else if (g_str_equal (action, "remove"))
-		g_usb_device_list_remove_dev (list, udevice);
+	return g_usb_context_get_devices (list->priv->context);
 }
 
 /**
  * g_usb_device_list_coldplug:
  * @list: a #GUsbDeviceList
  *
- * Finds all the USB devices and adds them to the list.
- *
- * You only need to call this function once, and any subsequent calls
- * are silently ignored.
+ * This function does nothing.
  *
  * Since: 0.1.0
  **/
 void
 g_usb_device_list_coldplug (GUsbDeviceList *list)
 {
-	GUsbDeviceListPrivate *priv = list->priv;
-	GList *devices, *elem;
-	libusb_context *ctx = _g_usb_context_get_context (priv->context);
-
-	if (priv->done_coldplug)
-		return;
-	libusb_get_device_list (ctx, &priv->coldplug_list);
-	devices = g_udev_client_query_by_subsystem (priv->udev, "usb");
-	for (elem = g_list_first (devices); elem; elem = g_list_next (elem)) {
-		g_usb_device_list_add_dev (list, elem->data);
-		g_object_unref (elem->data);
-	}
-	g_list_free (devices);
-	libusb_free_device_list (priv->coldplug_list, 1);
-	priv->coldplug_list = NULL;
-	priv->done_coldplug = TRUE;
+	return;
 }
 
 /**
@@ -401,33 +221,16 @@ g_usb_device_list_coldplug (GUsbDeviceList *list)
  * Since: 0.1.0
  **/
 GUsbDevice *
-g_usb_device_list_find_by_bus_address (GUsbDeviceList	*list,
-				       guint8		 bus,
-				       guint8		 address,
-				       GError		**error)
+g_usb_device_list_find_by_bus_address (GUsbDeviceList  *list,
+                                       guint8           bus,
+                                       guint8           address,
+                                       GError         **error)
 {
-	GUsbDeviceListPrivate *priv = list->priv;
-	GUsbDevice *device = NULL;
-	guint i;
+	g_return_val_if_fail (G_USB_IS_DEVICE_LIST (list), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-	/* ensure the list of coldplugged */
-	g_usb_device_list_coldplug (list);
-
-	for (i = 0; i < priv->devices->len; i++) {
-		GUsbDevice *curr = g_ptr_array_index (priv->devices, i);
-		if (g_usb_device_get_bus (curr) == bus &&
-		    g_usb_device_get_address (curr) == address) {
-			device = g_object_ref (curr);
-			goto out;
-		}
-	}
-	g_set_error (error,
-		     G_USB_DEVICE_ERROR,
-		     G_USB_DEVICE_ERROR_NO_DEVICE,
-		     "Failed to find device %04x:%04x",
-		     bus, address);
-out:
-	return device;
+	return g_usb_context_find_by_bus_address (list->priv->context,
+	                                          bus, address, error);
 }
 
 /**
@@ -444,34 +247,16 @@ out:
  * Since: 0.1.0
  **/
 GUsbDevice *
-g_usb_device_list_find_by_vid_pid (GUsbDeviceList	*list,
-				   guint16		 vid,
-				   guint16		 pid,
-				   GError		**error)
+g_usb_device_list_find_by_vid_pid (GUsbDeviceList  *list,
+                                   guint16          vid,
+                                   guint16          pid,
+                                   GError         **error)
 {
-	GUsbDeviceListPrivate *priv = list->priv;
-	GUsbDevice *device = NULL;
-	guint i;
+	g_return_val_if_fail (G_USB_IS_DEVICE_LIST (list), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-	/* ensure the list of coldplugged */
-	g_usb_device_list_coldplug (list);
-
-	for (i = 0; i < priv->devices->len; i++) {
-		GUsbDevice *curr = g_ptr_array_index (priv->devices, i);
-
-		if (g_usb_device_get_vid (curr) == vid &&
-		    g_usb_device_get_pid (curr) == pid) {
-			device = g_object_ref (curr);
-			goto out;
-		}
-	}
-	g_set_error (error,
-		     G_USB_DEVICE_ERROR,
-		     G_USB_DEVICE_ERROR_NO_DEVICE,
-		     "Failed to find device %04x:%04x",
-		     vid, pid);
-out:
-	return device;
+	return g_usb_context_find_by_vid_pid (list->priv->context,
+	                                      vid, pid, error);
 }
 
 /**
@@ -490,7 +275,5 @@ out:
 GUsbDeviceList *
 g_usb_device_list_new (GUsbContext *context)
 {
-	GObject *obj;
-	obj = g_object_new (G_USB_TYPE_DEVICE_LIST, "context", context, NULL);
-	return G_USB_DEVICE_LIST (obj);
+	return g_object_new (G_USB_TYPE_DEVICE_LIST, "context", context, NULL);
 }

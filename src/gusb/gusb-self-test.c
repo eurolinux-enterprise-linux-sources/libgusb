@@ -24,42 +24,8 @@
 #include <glib-object.h>
 
 #include "gusb-context.h"
+#include "gusb-context-private.h"
 #include "gusb-device.h"
-#include "gusb-device-list.h"
-
-static void
-gusb_context_func (void)
-{
-	GUsbContext *ctx;
-	GError *error = NULL;
-
-	ctx = g_usb_context_new (&error);
-	g_assert_no_error (error);
-	g_assert (ctx != NULL);
-
-	g_usb_context_set_debug (ctx, G_LOG_LEVEL_ERROR);
-
-	g_object_unref (ctx);
-}
-
-static void
-gusb_source_func (void)
-{
-	GUsbSource *source;
-	GUsbContext *ctx;
-	GError *error = NULL;
-
-	ctx = g_usb_context_new (&error);
-	g_assert_no_error (error);
-	g_assert (ctx != NULL);
-
-	source = g_usb_context_get_source (ctx, NULL);
-	g_assert (source != NULL);
-
-	/* TODO: test callback? */
-
-	g_object_unref (ctx);
-}
 
 static void
 gusb_device_func (void)
@@ -68,7 +34,6 @@ gusb_device_func (void)
 	GPtrArray *array;
 	GUsbContext *ctx;
 	GUsbDevice *device;
-	GUsbDeviceList *list;
 
 	ctx = g_usb_context_new (&error);
 	g_assert_no_error (error);
@@ -76,11 +41,7 @@ gusb_device_func (void)
 
 	g_usb_context_set_debug (ctx, G_LOG_LEVEL_ERROR);
 
-	list = g_usb_device_list_new (ctx);
-	g_assert (list != NULL);
-
-	g_usb_device_list_coldplug (list);
-	array = g_usb_device_list_get_devices (list);
+	array = g_usb_context_get_devices (ctx);
 	g_assert (array != NULL);
 	g_assert_cmpint (array->len, >, 0);
 	device = G_USB_DEVICE (g_ptr_array_index (array, 0));
@@ -92,10 +53,29 @@ gusb_device_func (void)
 }
 
 static void
-gusb_device_list_func (void)
+gusb_context_lookup_func (void)
+{
+	GUsbContext *ctx = NULL;
+	GError *error = NULL;
+	const gchar *tmp;
+
+	ctx = g_usb_context_new (&error);
+	g_assert_no_error (error);
+	g_assert (ctx != NULL);
+
+	tmp = _g_usb_context_lookup_vendor (ctx, 0x04d8, &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (tmp, ==, "Microchip Technology, Inc.");
+	tmp = _g_usb_context_lookup_product (ctx, 0x04d8, 0xf8da, &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (tmp, ==, "Hughski Ltd. ColorHug");
+	g_object_unref (ctx);
+}
+
+static void
+gusb_context_func (void)
 {
 	GUsbContext *ctx;
-	GUsbDeviceList *list;
 	GError *error = NULL;
 	GPtrArray *array;
 	guint old_number_of_devices;
@@ -111,18 +91,8 @@ gusb_device_list_func (void)
 
 	g_usb_context_set_debug (ctx, G_LOG_LEVEL_ERROR);
 
-	list = g_usb_device_list_new (ctx);
-	g_assert (list != NULL);
-
-	/* ensure we have an empty list */
-	array = g_usb_device_list_get_devices (list);
-	g_assert (array != NULL);
-	g_assert_cmpint (array->len, ==, 0);
-	g_ptr_array_unref (array);
-
 	/* coldplug, and ensure we got some devices */
-	g_usb_device_list_coldplug (list);
-	array = g_usb_device_list_get_devices (list);
+	array = g_usb_context_get_devices (ctx);
 	g_assert (array != NULL);
 	g_assert_cmpint (array->len, >, 0);
 	old_number_of_devices = array->len;
@@ -165,8 +135,7 @@ gusb_device_list_func (void)
 	g_ptr_array_unref (array);
 
 	/* coldplug again, and ensure we did not duplicate devices */
-	g_usb_device_list_coldplug (list);
-	array = g_usb_device_list_get_devices (list);
+	array = g_usb_context_get_devices (ctx);
 	g_assert (array != NULL);
 	g_assert_cmpint (array->len, ==, old_number_of_devices);
 	device = G_USB_DEVICE (g_ptr_array_index (array, 0));
@@ -175,7 +144,7 @@ gusb_device_list_func (void)
 	g_ptr_array_unref (array);
 
 	/* ensure we can search for the same device */
-	device = g_usb_device_list_find_by_bus_address (list,
+	device = g_usb_context_find_by_bus_address (ctx,
 							bus,
 							address,
 							&error);
@@ -186,7 +155,7 @@ gusb_device_list_func (void)
 	g_object_unref (device);
 
 	/* get a device that can't exist */
-	device = g_usb_device_list_find_by_vid_pid (list,
+	device = g_usb_context_find_by_vid_pid (ctx,
 						    0xffff,
 						    0xffff,
 						    &error);
@@ -196,7 +165,6 @@ gusb_device_list_func (void)
 	g_assert (device == NULL);
 	g_clear_error (&error);
 
-	g_object_unref (list);
 	g_object_unref (ctx);
 }
 
@@ -204,7 +172,6 @@ static void
 gusb_device_huey_func (void)
 {
 	GUsbContext *ctx;
-	GUsbDeviceList *list;
 	GError *error = NULL;
 	GUsbDevice *device;
 	gboolean ret;
@@ -217,12 +184,8 @@ gusb_device_huey_func (void)
 
 	g_usb_context_set_debug (ctx, G_LOG_LEVEL_ERROR);
 
-	list = g_usb_device_list_new (ctx);
-	g_assert (list != NULL);
-
 	/* coldplug, and get the huey */
-	g_usb_device_list_coldplug (list);
-	device = g_usb_device_list_find_by_vid_pid (list,
+	device = g_usb_context_find_by_vid_pid (ctx,
 						    0x0971,
 						    0x2005,
 						    &error);
@@ -315,7 +278,6 @@ gusb_device_huey_func (void)
 
 	g_object_unref (device);
 out:
-	g_object_unref (list);
 	g_object_unref (ctx);
 }
 
@@ -327,9 +289,9 @@ typedef struct {
 
 
 static void
-g_usb_device_print_data (const gchar *title,
-			 const guchar *data,
-			 gsize length)
+g_usb_device_print_data (const gchar  *title,
+                         const guchar *data,
+                         gsize         length)
 {
 	guint i;
 
@@ -348,9 +310,9 @@ g_usb_device_print_data (const gchar *title,
 }
 
 static void
-g_usb_test_button_pressed_cb (GObject *source_object,
-			      GAsyncResult *res,
-			      gpointer user_data)
+g_usb_test_button_pressed_cb (GObject      *source_object,
+                              GAsyncResult *res,
+                              gpointer      user_data)
 {
 	gboolean ret;
 	GError *error = NULL;
@@ -375,9 +337,8 @@ g_usb_test_button_pressed_cb (GObject *source_object,
 static void
 gusb_device_munki_func (void)
 {
-	GUsbContext *ctx;
-	GUsbDeviceList *list;
 	GError *error = NULL;
+	GUsbContext *ctx;
 	GUsbDevice *device;
 	gboolean ret;
 	GCancellable *cancellable = NULL;
@@ -390,15 +351,11 @@ gusb_device_munki_func (void)
 
 	g_usb_context_set_debug (ctx, G_LOG_LEVEL_ERROR);
 
-	list = g_usb_device_list_new (ctx);
-	g_assert (list != NULL);
-
 	/* coldplug, and get the ColorMunki */
-	g_usb_device_list_coldplug (list);
-	device = g_usb_device_list_find_by_vid_pid (list,
-						    0x0971,
-						    0x2007,
-						    &error);
+	device = g_usb_context_find_by_vid_pid (ctx,
+						0x0971,
+						0x2007,
+						&error);
 	if (device == NULL &&
 	    error->domain == G_USB_DEVICE_ERROR &&
 	    error->code == G_USB_DEVICE_ERROR_NO_DEVICE) {
@@ -504,15 +461,72 @@ gusb_device_munki_func (void)
 
 	g_object_unref (device);
 out:
-	g_object_unref (list);
+	g_object_unref (ctx);
+}
+
+static void
+gusb_device_ch2_func (void)
+{
+	GError *error = NULL;
+	GUsbContext *ctx;
+	GUsbDevice *device;
+	gboolean ret;
+	gchar *tmp = NULL;
+	guint8 idx;
+
+	ctx = g_usb_context_new (&error);
+	g_assert_no_error (error);
+	g_assert (ctx != NULL);
+
+	g_usb_context_set_debug (ctx, G_LOG_LEVEL_ERROR);
+
+	/* coldplug, and get the ColorHug */
+	device = g_usb_context_find_by_vid_pid (ctx,
+						0x273f,
+						0x1004,
+						&error);
+	if (device == NULL &&
+	    error->domain == G_USB_DEVICE_ERROR &&
+	    error->code == G_USB_DEVICE_ERROR_NO_DEVICE) {
+		g_print ("No device detected!\n");
+		g_error_free (error);
+		goto out;
+	}
+	g_assert_no_error (error);
+	g_assert (device != NULL);
+
+	/* open */
+	ret = g_usb_device_open (device, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* get vendor data */
+	idx = g_usb_device_get_custom_index (device,
+					     G_USB_DEVICE_CLASS_VENDOR_SPECIFIC,
+					     'F', 'W', &error);
+	g_assert_no_error (error);
+	g_assert_cmpint (idx, ==, 3);
+
+	/* get the firmware version */
+	tmp = g_usb_device_get_string_descriptor (device, idx, &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (tmp, ==, "2.0.3");
+	g_free (tmp);
+
+	/* close */
+	ret = g_usb_device_close (device, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_object_unref (device);
+out:
 	g_object_unref (ctx);
 }
 
 int
-main (int argc, char **argv)
+main (int    argc,
+      char **argv)
 {
-	g_type_init ();
-	g_thread_init (NULL);
 	g_test_init (&argc, &argv, NULL);
 
 	/* only critical and error are fatal */
@@ -520,11 +534,11 @@ main (int argc, char **argv)
 
 	/* tests go here */
 	g_test_add_func ("/gusb/context", gusb_context_func);
-	g_test_add_func ("/gusb/source", gusb_source_func);
+	g_test_add_func ("/gusb/context{lookup}", gusb_context_lookup_func);
 	g_test_add_func ("/gusb/device", gusb_device_func);
-	g_test_add_func ("/gusb/device-list", gusb_device_list_func);
 	g_test_add_func ("/gusb/device[huey]", gusb_device_huey_func);
 	g_test_add_func ("/gusb/device[munki]", gusb_device_munki_func);
+	g_test_add_func ("/gusb/device[colorhug2]", gusb_device_ch2_func);
 
 	return g_test_run ();
 }

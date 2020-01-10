@@ -4,9 +4,6 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
 
-/* Use GUDEV support for hardware */
-#define HAVE_GUDEV 1
-
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
 
@@ -34,12 +31,8 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
-
-/* Define to 1 if your C compiler doesn't accept -c and -o together. */
-/* #undef NO_MINUS_C_MINUS_O */
 
 /* Name of package */
 #define PACKAGE "libgusb"
@@ -51,7 +44,7 @@
 #define PACKAGE_NAME "libgusb"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libgusb 0.1.6"
+#define PACKAGE_STRING "libgusb 0.2.9"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libgusb"
@@ -60,10 +53,10 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.1.6"
+#define PACKAGE_VERSION "0.2.9"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.1.6"
+#define VERSION "0.2.9"

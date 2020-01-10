@@ -1,3 +1,4 @@
 g_usb_context_get_type
 g_usb_device_get_type
 g_usb_device_list_get_type
+g_usb_interface_get_type

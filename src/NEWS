@@ -1,3 +1,116 @@
+Version 0.2.9
+~~~~~~~~~~~~~
+Released: 2016-03-21
+
+New Features:
+ - Add g_usb_context_wait_for_replug() (Richard Hughes)
+ - Install gusbcmd as a debugging aid (Richard Hughes)
+
+Version 0.2.8
+~~~~~~~~~~~~~
+Released: 2015-12-01
+
+New Features:
+ - Add a PERMISSION_DENIED error enum (Richard Hughes)
+ - Add a thin glib wrapper around a libusb_interface_descriptor (Richard Hughes)
+ - Add g_usb_device_get_interfaces() (Richard Hughes)
+ - Add g_usb_device_get_release() (Richard Hughes)
+ - Add g_usb_device_set_interface_alt() (Richard Hughes)
+
+Bugfixes:
+ - Ignore the not-found error when resetting a device (Richard Hughes)
+
+Version 0.2.7
+~~~~~~~~~~~~~
+Released: 2015-09-15
+
+New Features:
+ - Support g_autoptr() for all gusb object types (Kalev Lember)
+
+Bugfixes:
+ - Add missing element-type annotations (Robert Ancell)
+
+Version 0.2.6
+~~~~~~~~~~~~~
+Released: 2015-07-06
+
+Bugfixes:
+ - Do not unref the GMainContext after each request (Richard Hughes)
+
+Version 0.2.5
+~~~~~~~~~~~~~
+Released: 2015-05-28
+
+New Features:
+ - Add g_usb_device_get_custom_index() (Richard Hughes)
+ - Allow setting the GMainContext when used for sync methods (Richard Hughes)
+ - Include all the USB device class codes (Richard Hughes)
+ - Use symbol versioning (Pass Automated Testing Suite)
+
+Version 0.2.4
+~~~~~~~~~~~~~
+Released: 2015-01-09
+
+Notes:
+ - Bump glib build requirement to 2.38 (Ignacio Casal Quinteiro)
+
+New Features:
+ - Add g_usb_context_find_by_platform_id() (Richard Hughes)
+ - Add g_usb_device_get_children() (Richard Hughes)
+ - Add g_usb_device_get_device_subclass and get_device_protocol methods (Ignacio Casal Quinteiro)
+ - Add g_usb_device_get_parent() (Richard Hughes)
+ - Add g_usb_device_get_port_number() (Richard Hughes)
+ - Add g_usb_device_get_vid_as_str() (Richard Hughes)
+ - Show more helpful output for 'gusb show' (Richard Hughes)
+
+Bugfixes:
+ - Don't filter out hub devices when getting the device list (Richard Hughes)
+ - Make the platform ID persistent across re-plug (Richard Hughes)
+ - Port to GTask (Ignacio Casal Quinteiro)
+ - Use new Glib features for various code cleanups (Ignacio Casal Quinteiro)
+
+Version 0.2.3
+~~~~~~~~~~~~~
+Released: 2014-12-01
+
+Bugfixes:
+ - Correctly terminate the libusb event thread (Richard Hughes)
+
+Version 0.2.2
+~~~~~~~~~~~~~
+Released: 2014-11-26
+
+New Features:
+ - Official Windows support!
+
+Bugfixes:
+ - No longer require G_USB_API_IS_SUBJECT_TO_CHANGE (Richard Hughes)
+ - Use a thread to process libusb1 events (Richard Hughes)
+
+Version 0.2.1
+~~~~~~~~~~~~~
+Released: 2014-11-24
+
+Bugfixes:
+ - Always set a device platform ID (Richard Hughes)
+ - Ignore 'unsupported' as a return value for kernel drivers (Richard Hughes)
+
+Version 0.2.0
+~~~~~~~~~~~~~
+Released: 2014-11-20
+
+Notes:
+ - This release raises the GLib requirement to 2.32 and libusb to 1.0.19
+ - No GUdev functionality is now required
+
+New Features:
+ - Add g_usb_device_get_device_class() (Richard Hughes)
+ - Use the native hotplug support in libusb 1.0.19 (Richard Hughes)
+
+Bugfixes:
+ - Fix a crash where libusb_get_pollfds() is unavailable (Richard Hughes)
+ - Manually coldplug devices and poll if hotplugging is not available (Richard Hughes)
+
 Version 0.1.6
 ~~~~~~~~~~~~~
 Released: 2013-03-05

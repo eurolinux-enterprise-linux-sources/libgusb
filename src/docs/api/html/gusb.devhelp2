@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GUsb Reference Manual" link="index.html" author="Richard Hughes" name="gusb" version="2" language="c">
   <chapters>
     <sub name="GUSB Specification" link="specification.html">
@@ -12,6 +11,7 @@
       <sub name="gusb-source" link="gusb-gusb-source.html"/>
       <sub name="GUsbDevice" link="GUsbDevice.html"/>
       <sub name="GUsbDeviceList" link="GUsbDeviceList.html"/>
+      <sub name="GUsbInterface" link="GUsbInterface.html"/>
     </sub>
     <sub name="libgusb glib helpers" link="libgusb-helpers.html">
       <sub name="gusb-version" link="gusb-gusb-version.html"/>
@@ -23,71 +23,152 @@
     </sub>
   </chapters>
   <functions>
+    <keyword type="function" name="g_usb_context_error_quark ()" link="GUsbContext.html#g-usb-context-error-quark" since="0.1.0"/>
+    <keyword type="function" name="g_usb_context_new ()" link="GUsbContext.html#g-usb-context-new" since="0.1.0"/>
+    <keyword type="function" name="g_usb_context_get_source ()" link="GUsbContext.html#g-usb-context-get-source" deprecated="" since="0.1.0"/>
+    <keyword type="function" name="g_usb_context_get_main_context ()" link="GUsbContext.html#g-usb-context-get-main-context" since="0.2.5"/>
+    <keyword type="function" name="g_usb_context_set_main_context ()" link="GUsbContext.html#g-usb-context-set-main-context" since="0.2.5"/>
+    <keyword type="function" name="g_usb_context_enumerate ()" link="GUsbContext.html#g-usb-context-enumerate" since="0.2.2"/>
+    <keyword type="function" name="g_usb_context_set_debug ()" link="GUsbContext.html#g-usb-context-set-debug" since="0.1.0"/>
+    <keyword type="function" name="g_usb_context_get_devices ()" link="GUsbContext.html#g-usb-context-get-devices" since="0.2.2"/>
+    <keyword type="function" name="g_usb_context_find_by_bus_address ()" link="GUsbContext.html#g-usb-context-find-by-bus-address" since="0.2.2"/>
+    <keyword type="function" name="g_usb_context_find_by_vid_pid ()" link="GUsbContext.html#g-usb-context-find-by-vid-pid" since="0.2.2"/>
+    <keyword type="function" name="g_usb_context_find_by_platform_id ()" link="GUsbContext.html#g-usb-context-find-by-platform-id" since="0.2.4"/>
+    <keyword type="macro" name="G_USB_CONTEXT_ERROR" link="GUsbContext.html#G-USB-CONTEXT-ERROR:CAPS"/>
     <keyword type="struct" name="struct GUsbContext" link="GUsbContext.html#GUsbContext-struct"/>
     <keyword type="struct" name="struct GUsbContextClass" link="GUsbContext.html#GUsbContextClass"/>
     <keyword type="enum" name="enum GUsbContextError" link="GUsbContext.html#GUsbContextError"/>
-    <keyword type="macro" name="G_USB_CONTEXT_ERROR" link="GUsbContext.html#G-USB-CONTEXT-ERROR:CAPS"/>
-    <keyword type="function" name="g_usb_context_error_quark ()" link="GUsbContext.html#g-usb-context-error-quark" since="0.1.0"/>
-    <keyword type="function" name="g_usb_context_get_source ()" link="GUsbContext.html#g-usb-context-get-source" since="0.1.0"/>
-    <keyword type="function" name="g_usb_context_new ()" link="GUsbContext.html#g-usb-context-new" since="0.1.0"/>
-    <keyword type="function" name="g_usb_context_set_debug ()" link="GUsbContext.html#g-usb-context-set-debug" since="0.1.0"/>
-    <keyword type="property" name="The &quot;debug-level&quot; property" link="GUsbContext.html#GUsbContext--debug-level"/>
-    <keyword type="property" name="The &quot;libusb-context&quot; property" link="GUsbContext.html#GUsbContext--libusb-context"/>
-    <keyword type="struct" name="GUsbSource" link="gusb-gusb-source.html#GUsbSource"/>
-    <keyword type="enum" name="enum GUsbSourceError" link="gusb-gusb-source.html#GUsbSourceError"/>
+    <keyword type="struct" name="GUsbContextPrivate" link="GUsbContext.html#GUsbContextPrivate"/>
+    <keyword type="property" name="The “debug-level” property" link="GUsbContext.html#GUsbContext--debug-level"/>
+    <keyword type="property" name="The “libusb-context” property" link="GUsbContext.html#GUsbContext--libusb-context"/>
+    <keyword type="signal" name="The “device-added” signal" link="GUsbContext.html#GUsbContext-device-added"/>
+    <keyword type="signal" name="The “device-removed” signal" link="GUsbContext.html#GUsbContext-device-removed"/>
+    <keyword type="function" name="g_usb_source_error_quark ()" link="gusb-gusb-source.html#g-usb-source-error-quark" deprecated="" since="0.1.0"/>
+    <keyword type="function" name="g_usb_source_set_callback ()" link="gusb-gusb-source.html#g-usb-source-set-callback" deprecated="" since="0.1.0"/>
     <keyword type="macro" name="G_USB_SOURCE_ERROR" link="gusb-gusb-source.html#G-USB-SOURCE-ERROR:CAPS"/>
-    <keyword type="function" name="g_usb_source_error_quark ()" link="gusb-gusb-source.html#g-usb-source-error-quark" since="0.1.0"/>
-    <keyword type="function" name="g_usb_source_set_callback ()" link="gusb-gusb-source.html#g-usb-source-set-callback" since="0.1.0"/>
-    <keyword type="struct" name="struct GUsbDevice" link="GUsbDevice.html#GUsbDevice-struct"/>
-    <keyword type="enum" name="enum GUsbDeviceClaimInterfaceFlags" link="GUsbDevice.html#GUsbDeviceClaimInterfaceFlags"/>
-    <keyword type="struct" name="struct GUsbDeviceClass" link="GUsbDevice.html#GUsbDeviceClass"/>
-    <keyword type="enum" name="enum GUsbDeviceDirection" link="GUsbDevice.html#GUsbDeviceDirection"/>
-    <keyword type="enum" name="enum GUsbDeviceError" link="GUsbDevice.html#GUsbDeviceError"/>
-    <keyword type="enum" name="enum GUsbDeviceRecipient" link="GUsbDevice.html#GUsbDeviceRecipient"/>
-    <keyword type="enum" name="enum GUsbDeviceRequestType" link="GUsbDevice.html#GUsbDeviceRequestType"/>
+    <keyword type="enum" name="enum GUsbSourceError" link="gusb-gusb-source.html#GUsbSourceError"/>
+    <keyword type="struct" name="GUsbSource" link="gusb-gusb-source.html#GUsbSource"/>
+    <keyword type="function" name="g_usb_device_error_quark ()" link="GUsbDevice.html#g-usb-device-error-quark" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_platform_id ()" link="GUsbDevice.html#g-usb-device-get-platform-id" since="0.1.1"/>
+    <keyword type="function" name="g_usb_device_get_parent ()" link="GUsbDevice.html#g-usb-device-get-parent" since="0.2.4"/>
+    <keyword type="function" name="g_usb_device_get_children ()" link="GUsbDevice.html#g-usb-device-get-children" since="0.2.4"/>
+    <keyword type="function" name="g_usb_device_get_bus ()" link="GUsbDevice.html#g-usb-device-get-bus" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_address ()" link="GUsbDevice.html#g-usb-device-get-address" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_port_number ()" link="GUsbDevice.html#g-usb-device-get-port-number" since="0.2.4"/>
+    <keyword type="function" name="g_usb_device_get_vid ()" link="GUsbDevice.html#g-usb-device-get-vid" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_pid ()" link="GUsbDevice.html#g-usb-device-get-pid" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_release ()" link="GUsbDevice.html#g-usb-device-get-release" since="0.2.8"/>
+    <keyword type="function" name="g_usb_device_get_vid_as_str ()" link="GUsbDevice.html#g-usb-device-get-vid-as-str" since="0.2.4"/>
+    <keyword type="function" name="g_usb_device_get_pid_as_str ()" link="GUsbDevice.html#g-usb-device-get-pid-as-str" since="0.2.4"/>
+    <keyword type="function" name="g_usb_device_get_device_class ()" link="GUsbDevice.html#g-usb-device-get-device-class" since="0.1.7"/>
+    <keyword type="function" name="g_usb_device_get_device_subclass ()" link="GUsbDevice.html#g-usb-device-get-device-subclass" since="0.2.4"/>
+    <keyword type="function" name="g_usb_device_get_device_protocol ()" link="GUsbDevice.html#g-usb-device-get-device-protocol" since="0.2.4"/>
+    <keyword type="function" name="g_usb_device_get_manufacturer_index ()" link="GUsbDevice.html#g-usb-device-get-manufacturer-index" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_product_index ()" link="GUsbDevice.html#g-usb-device-get-product-index" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_serial_number_index ()" link="GUsbDevice.html#g-usb-device-get-serial-number-index" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_get_custom_index ()" link="GUsbDevice.html#g-usb-device-get-custom-index" since="0.2.5"/>
+    <keyword type="function" name="g_usb_device_get_interface ()" link="GUsbDevice.html#g-usb-device-get-interface" since="0.2.8"/>
+    <keyword type="function" name="g_usb_device_get_interfaces ()" link="GUsbDevice.html#g-usb-device-get-interfaces" since="0.2.8"/>
+    <keyword type="function" name="g_usb_device_open ()" link="GUsbDevice.html#g-usb-device-open" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_close ()" link="GUsbDevice.html#g-usb-device-close"/>
+    <keyword type="function" name="g_usb_device_reset ()" link="GUsbDevice.html#g-usb-device-reset"/>
+    <keyword type="function" name="g_usb_device_get_configuration ()" link="GUsbDevice.html#g-usb-device-get-configuration" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_set_configuration ()" link="GUsbDevice.html#g-usb-device-set-configuration" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_claim_interface ()" link="GUsbDevice.html#g-usb-device-claim-interface" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_release_interface ()" link="GUsbDevice.html#g-usb-device-release-interface" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_set_interface_alt ()" link="GUsbDevice.html#g-usb-device-set-interface-alt" since="0.2.8"/>
+    <keyword type="function" name="g_usb_device_get_string_descriptor ()" link="GUsbDevice.html#g-usb-device-get-string-descriptor" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_control_transfer ()" link="GUsbDevice.html#g-usb-device-control-transfer" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_bulk_transfer ()" link="GUsbDevice.html#g-usb-device-bulk-transfer" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_interrupt_transfer ()" link="GUsbDevice.html#g-usb-device-interrupt-transfer" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_control_transfer_async ()" link="GUsbDevice.html#g-usb-device-control-transfer-async" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_control_transfer_finish ()" link="GUsbDevice.html#g-usb-device-control-transfer-finish" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_bulk_transfer_async ()" link="GUsbDevice.html#g-usb-device-bulk-transfer-async" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_bulk_transfer_finish ()" link="GUsbDevice.html#g-usb-device-bulk-transfer-finish" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_interrupt_transfer_async ()" link="GUsbDevice.html#g-usb-device-interrupt-transfer-async" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_interrupt_transfer_finish ()" link="GUsbDevice.html#g-usb-device-interrupt-transfer-finish" since="0.1.0"/>
     <keyword type="macro" name="G_USB_DEVICE_ERROR" link="GUsbDevice.html#G-USB-DEVICE-ERROR:CAPS"/>
-    <keyword type="function" name="g_usb_device_bulk_transfer ()" link="GUsbDevice.html#g-usb-device-bulk-transfer" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_bulk_transfer_async ()" link="GUsbDevice.html#g-usb-device-bulk-transfer-async" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_bulk_transfer_finish ()" link="GUsbDevice.html#g-usb-device-bulk-transfer-finish" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_claim_interface ()" link="GUsbDevice.html#g-usb-device-claim-interface" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_close ()" link="GUsbDevice.html#g-usb-device-close"/>
-    <keyword type="function" name="g_usb_device_control_transfer ()" link="GUsbDevice.html#g-usb-device-control-transfer" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_control_transfer_async ()" link="GUsbDevice.html#g-usb-device-control-transfer-async" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_control_transfer_finish ()" link="GUsbDevice.html#g-usb-device-control-transfer-finish" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_error_quark ()" link="GUsbDevice.html#g-usb-device-error-quark" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_address ()" link="GUsbDevice.html#g-usb-device-get-address" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_bus ()" link="GUsbDevice.html#g-usb-device-get-bus" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_configuration ()" link="GUsbDevice.html#g-usb-device-get-configuration" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_manufacturer_index ()" link="GUsbDevice.html#g-usb-device-get-manufacturer-index" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_pid ()" link="GUsbDevice.html#g-usb-device-get-pid" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_platform_id ()" link="GUsbDevice.html#g-usb-device-get-platform-id" since="0.1.1"/>
-    <keyword type="function" name="g_usb_device_get_product_index ()" link="GUsbDevice.html#g-usb-device-get-product-index" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_serial_number_index ()" link="GUsbDevice.html#g-usb-device-get-serial-number-index" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_string_descriptor ()" link="GUsbDevice.html#g-usb-device-get-string-descriptor" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_get_vid ()" link="GUsbDevice.html#g-usb-device-get-vid" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_interrupt_transfer ()" link="GUsbDevice.html#g-usb-device-interrupt-transfer" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_interrupt_transfer_async ()" link="GUsbDevice.html#g-usb-device-interrupt-transfer-async" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_interrupt_transfer_finish ()" link="GUsbDevice.html#g-usb-device-interrupt-transfer-finish" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_open ()" link="GUsbDevice.html#g-usb-device-open" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_release_interface ()" link="GUsbDevice.html#g-usb-device-release-interface" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_reset ()" link="GUsbDevice.html#g-usb-device-reset"/>
-    <keyword type="function" name="g_usb_device_set_configuration ()" link="GUsbDevice.html#g-usb-device-set-configuration" since="0.1.0"/>
-    <keyword type="property" name="The &quot;context&quot; property" link="GUsbDevice.html#GUsbDevice--context"/>
-    <keyword type="property" name="The &quot;libusb-device&quot; property" link="GUsbDevice.html#GUsbDevice--libusb-device"/>
-    <keyword type="property" name="The &quot;platform-id&quot; property" link="GUsbDevice.html#GUsbDevice--platform-id"/>
+    <keyword type="enum" name="enum GUsbDeviceDirection" link="GUsbDevice.html#GUsbDeviceDirection"/>
+    <keyword type="enum" name="enum GUsbDeviceRequestType" link="GUsbDevice.html#GUsbDeviceRequestType"/>
+    <keyword type="enum" name="enum GUsbDeviceRecipient" link="GUsbDevice.html#GUsbDeviceRecipient"/>
+    <keyword type="enum" name="enum GUsbDeviceError" link="GUsbDevice.html#GUsbDeviceError"/>
+    <keyword type="enum" name="enum GUsbDeviceClaimInterfaceFlags" link="GUsbDevice.html#GUsbDeviceClaimInterfaceFlags"/>
+    <keyword type="enum" name="enum GUsbDeviceClassCode" link="GUsbDevice.html#GUsbDeviceClassCode"/>
+    <keyword type="struct" name="struct GUsbDevice" link="GUsbDevice.html#GUsbDevice-struct"/>
+    <keyword type="struct" name="struct GUsbDeviceClass" link="GUsbDevice.html#GUsbDeviceClass"/>
+    <keyword type="struct" name="GUsbDevicePrivate" link="GUsbDevice.html#GUsbDevicePrivate"/>
+    <keyword type="property" name="The “context” property" link="GUsbDevice.html#GUsbDevice--context"/>
+    <keyword type="property" name="The “libusb-device” property" link="GUsbDevice.html#GUsbDevice--libusb-device"/>
+    <keyword type="property" name="The “platform-id” property" link="GUsbDevice.html#GUsbDevice--platform-id"/>
+    <keyword type="function" name="g_usb_device_list_new ()" link="GUsbDeviceList.html#g-usb-device-list-new" deprecated="" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_list_coldplug ()" link="GUsbDeviceList.html#g-usb-device-list-coldplug" deprecated="" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_list_get_devices ()" link="GUsbDeviceList.html#g-usb-device-list-get-devices" deprecated="" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_list_find_by_bus_address ()" link="GUsbDeviceList.html#g-usb-device-list-find-by-bus-address" deprecated="" since="0.1.0"/>
+    <keyword type="function" name="g_usb_device_list_find_by_vid_pid ()" link="GUsbDeviceList.html#g-usb-device-list-find-by-vid-pid" deprecated="" since="0.1.0"/>
     <keyword type="struct" name="struct GUsbDeviceList" link="GUsbDeviceList.html#GUsbDeviceList-struct"/>
     <keyword type="struct" name="struct GUsbDeviceListClass" link="GUsbDeviceList.html#GUsbDeviceListClass"/>
-    <keyword type="function" name="g_usb_device_list_coldplug ()" link="GUsbDeviceList.html#g-usb-device-list-coldplug" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_list_find_by_bus_address ()" link="GUsbDeviceList.html#g-usb-device-list-find-by-bus-address" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_list_find_by_vid_pid ()" link="GUsbDeviceList.html#g-usb-device-list-find-by-vid-pid" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_list_get_devices ()" link="GUsbDeviceList.html#g-usb-device-list-get-devices" since="0.1.0"/>
-    <keyword type="function" name="g_usb_device_list_new ()" link="GUsbDeviceList.html#g-usb-device-list-new" since="0.1.0"/>
-    <keyword type="property" name="The &quot;context&quot; property" link="GUsbDeviceList.html#GUsbDeviceList--context"/>
-    <keyword type="signal" name="The &quot;device-added&quot; signal" link="GUsbDeviceList.html#GUsbDeviceList-device-added"/>
-    <keyword type="signal" name="The &quot;device-removed&quot; signal" link="GUsbDeviceList.html#GUsbDeviceList-device-removed"/>
+    <keyword type="struct" name="GUsbDeviceListPrivate" link="GUsbDeviceList.html#GUsbDeviceListPrivate"/>
+    <keyword type="property" name="The “context” property" link="GUsbDeviceList.html#GUsbDeviceList--context"/>
+    <keyword type="signal" name="The “device-added” signal" link="GUsbDeviceList.html#GUsbDeviceList-device-added"/>
+    <keyword type="signal" name="The “device-removed” signal" link="GUsbDeviceList.html#GUsbDeviceList-device-removed"/>
+    <keyword type="function" name="g_usb_interface_get_length ()" link="GUsbInterface.html#g-usb-interface-get-length" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_kind ()" link="GUsbInterface.html#g-usb-interface-get-kind" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_number ()" link="GUsbInterface.html#g-usb-interface-get-number" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_alternate ()" link="GUsbInterface.html#g-usb-interface-get-alternate" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_class ()" link="GUsbInterface.html#g-usb-interface-get-class" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_subclass ()" link="GUsbInterface.html#g-usb-interface-get-subclass" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_protocol ()" link="GUsbInterface.html#g-usb-interface-get-protocol" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_index ()" link="GUsbInterface.html#g-usb-interface-get-index" since="0.2.8"/>
+    <keyword type="function" name="g_usb_interface_get_extra ()" link="GUsbInterface.html#g-usb-interface-get-extra" since="0.2.8"/>
+    <keyword type="struct" name="GUsbInterface" link="GUsbInterface.html#GUsbInterface-struct"/>
     <keyword type="macro" name="G_USB_CHECK_VERSION()" link="gusb-gusb-version.html#G-USB-CHECK-VERSION:CAPS"/>
     <keyword type="macro" name="G_USB_MAJOR_VERSION" link="gusb-gusb-version.html#G-USB-MAJOR-VERSION:CAPS"/>
-    <keyword type="macro" name="G_USB_MICRO_VERSION" link="gusb-gusb-version.html#G-USB-MICRO-VERSION:CAPS"/>
     <keyword type="macro" name="G_USB_MINOR_VERSION" link="gusb-gusb-version.html#G-USB-MINOR-VERSION:CAPS"/>
+    <keyword type="macro" name="G_USB_MICRO_VERSION" link="gusb-gusb-version.html#G-USB-MICRO-VERSION:CAPS"/>
+    <keyword type="constant" name="G_USB_CONTEXT_ERROR_INTERNAL" link="GUsbContext.html#G-USB-CONTEXT-ERROR-INTERNAL:CAPS"/>
+    <keyword type="constant" name="G_USB_SOURCE_ERROR_INTERNAL" link="gusb-gusb-source.html#G-USB-SOURCE-ERROR-INTERNAL:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_DIRECTION_DEVICE_TO_HOST" link="GUsbDevice.html#G-USB-DEVICE-DIRECTION-DEVICE-TO-HOST:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_DIRECTION_HOST_TO_DEVICE" link="GUsbDevice.html#G-USB-DEVICE-DIRECTION-HOST-TO-DEVICE:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_REQUEST_TYPE_STANDARD" link="GUsbDevice.html#G-USB-DEVICE-REQUEST-TYPE-STANDARD:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_REQUEST_TYPE_CLASS" link="GUsbDevice.html#G-USB-DEVICE-REQUEST-TYPE-CLASS:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_REQUEST_TYPE_VENDOR" link="GUsbDevice.html#G-USB-DEVICE-REQUEST-TYPE-VENDOR:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_REQUEST_TYPE_RESERVED" link="GUsbDevice.html#G-USB-DEVICE-REQUEST-TYPE-RESERVED:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_RECIPIENT_DEVICE" link="GUsbDevice.html#G-USB-DEVICE-RECIPIENT-DEVICE:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_RECIPIENT_INTERFACE" link="GUsbDevice.html#G-USB-DEVICE-RECIPIENT-INTERFACE:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_RECIPIENT_ENDPOINT" link="GUsbDevice.html#G-USB-DEVICE-RECIPIENT-ENDPOINT:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_RECIPIENT_OTHER" link="GUsbDevice.html#G-USB-DEVICE-RECIPIENT-OTHER:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_INTERNAL" link="GUsbDevice.html#G-USB-DEVICE-ERROR-INTERNAL:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_IO" link="GUsbDevice.html#G-USB-DEVICE-ERROR-IO:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_TIMED_OUT" link="GUsbDevice.html#G-USB-DEVICE-ERROR-TIMED-OUT:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_NOT_SUPPORTED" link="GUsbDevice.html#G-USB-DEVICE-ERROR-NOT-SUPPORTED:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_NO_DEVICE" link="GUsbDevice.html#G-USB-DEVICE-ERROR-NO-DEVICE:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_NOT_OPEN" link="GUsbDevice.html#G-USB-DEVICE-ERROR-NOT-OPEN:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_ALREADY_OPEN" link="GUsbDevice.html#G-USB-DEVICE-ERROR-ALREADY-OPEN:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_CANCELLED" link="GUsbDevice.html#G-USB-DEVICE-ERROR-CANCELLED:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_FAILED" link="GUsbDevice.html#G-USB-DEVICE-ERROR-FAILED:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_PERMISSION_DENIED" link="GUsbDevice.html#G-USB-DEVICE-ERROR-PERMISSION-DENIED:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_ERROR_LAST" link="GUsbDevice.html#G-USB-DEVICE-ERROR-LAST:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLAIM_INTERFACE_BIND_KERNEL_DRIVER" link="GUsbDevice.html#G-USB-DEVICE-CLAIM-INTERFACE-BIND-KERNEL-DRIVER:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_INTERFACE_DESC" link="GUsbDevice.html#G-USB-DEVICE-CLASS-INTERFACE-DESC:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_AUDIO" link="GUsbDevice.html#G-USB-DEVICE-CLASS-AUDIO:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_COMMUNICATIONS" link="GUsbDevice.html#G-USB-DEVICE-CLASS-COMMUNICATIONS:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_HID" link="GUsbDevice.html#G-USB-DEVICE-CLASS-HID:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_PHYSICAL" link="GUsbDevice.html#G-USB-DEVICE-CLASS-PHYSICAL:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_IMAGE" link="GUsbDevice.html#G-USB-DEVICE-CLASS-IMAGE:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_PRINTER" link="GUsbDevice.html#G-USB-DEVICE-CLASS-PRINTER:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_MASS_STORAGE" link="GUsbDevice.html#G-USB-DEVICE-CLASS-MASS-STORAGE:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_HUB" link="GUsbDevice.html#G-USB-DEVICE-CLASS-HUB:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_CDC_DATA" link="GUsbDevice.html#G-USB-DEVICE-CLASS-CDC-DATA:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_SMART_CARD" link="GUsbDevice.html#G-USB-DEVICE-CLASS-SMART-CARD:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_CONTENT_SECURITY" link="GUsbDevice.html#G-USB-DEVICE-CLASS-CONTENT-SECURITY:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_VIDEO" link="GUsbDevice.html#G-USB-DEVICE-CLASS-VIDEO:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_PERSONAL_HEALTHCARE" link="GUsbDevice.html#G-USB-DEVICE-CLASS-PERSONAL-HEALTHCARE:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_AUDIO_VIDEO" link="GUsbDevice.html#G-USB-DEVICE-CLASS-AUDIO-VIDEO:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_BILLBOARD" link="GUsbDevice.html#G-USB-DEVICE-CLASS-BILLBOARD:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_DIAGNOSTIC" link="GUsbDevice.html#G-USB-DEVICE-CLASS-DIAGNOSTIC:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_WIRELESS_CONTROLLER" link="GUsbDevice.html#G-USB-DEVICE-CLASS-WIRELESS-CONTROLLER:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_MISCELLANEOUS" link="GUsbDevice.html#G-USB-DEVICE-CLASS-MISCELLANEOUS:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_APPLICATION_SPECIFIC" link="GUsbDevice.html#G-USB-DEVICE-CLASS-APPLICATION-SPECIFIC:CAPS"/>
+    <keyword type="constant" name="G_USB_DEVICE_CLASS_VENDOR_SPECIFIC" link="GUsbDevice.html#G-USB-DEVICE-CLASS-VENDOR-SPECIFIC:CAPS"/>
   </functions>
 </book>

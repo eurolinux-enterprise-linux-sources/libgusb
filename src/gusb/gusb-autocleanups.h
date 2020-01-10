@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2011 Debarshi Ray <debarshir@src.gnome.org>
+ * Copyright (C) 2015 Kalev Lember <klember@redhat.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -18,18 +18,19 @@
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GUSB_SOURCE_PRIVATE_H__
-#define __GUSB_SOURCE_PRIVATE_H__
+#ifndef __GUSB_AUTOCLEANUPS_H__
+#define __GUSB_AUTOCLEANUPS_H__
 
 #include <gusb/gusb-context.h>
-#include <gusb/gusb-source.h>
+#include <gusb/gusb-device.h>
+#include <gusb/gusb-device-list.h>
 
-G_BEGIN_DECLS
+#ifdef G_DEFINE_AUTOPTR_CLEANUP_FUNC
 
-GUsbSource	*_g_usb_source_new		(GMainContext	*main_ctx,
-						 GUsbContext	*context);
-void		 _g_usb_source_destroy		(GUsbSource	*source);
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUsbContext, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUsbDevice, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUsbDeviceList, g_object_unref)
 
-G_END_DECLS
+#endif
 
-#endif /* __GUSB_SOURCE_PRIVATE_H__ */
+#endif /* __GUSB_AUTOCLEANUPS_H__ */

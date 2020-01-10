@@ -46,14 +46,14 @@
  *
  * The compile-time minor version
  */
-#define G_USB_MINOR_VERSION		(1)
+#define G_USB_MINOR_VERSION		(2)
 
 /**
  * G_USB_MICRO_VERSION:
  *
  * The compile-time micro version
  */
-#define G_USB_MICRO_VERSION		(6)
+#define G_USB_MICRO_VERSION		(9)
 
 /**
  * G_USB_CHECK_VERSION:

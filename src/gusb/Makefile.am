@@ -20,20 +20,23 @@ libgusb_include_HEADERS =					\
 
 libgusbbase_includedir = $(libgusb_includedir)/gusb
 libgusbbase_include_HEADERS =					\
+	gusb-autocleanups.h					\
 	gusb-version.h						\
 	gusb-context.h						\
 	gusb-context-private.h					\
 	gusb-device.h						\
 	gusb-device-private.h					\
 	gusb-device-list.h					\
+	gusb-interface.h					\
+	gusb-interface-private.h				\
 	gusb-source.h						\
-	gusb-source-private.h					\
 	gusb-util.h
 
 libgusb_la_SOURCES =						\
 	gusb-context.c						\
 	gusb-device.c						\
 	gusb-device-list.c					\
+	gusb-interface.c					\
 	gusb-source.c						\
 	gusb-util.c
 
@@ -46,7 +49,7 @@ libgusb_la_LDFLAGS =						\
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
 	-export-dynamic						\
 	-no-undefined						\
-	-export-symbols-regex '^g_usb_.*'
+	-Wl,--version-script=$(top_srcdir)/gusb/libgusb.ver
 
 libgusb_la_CFLAGS =						\
 	$(WARNINGFLAGS_C)
@@ -59,12 +62,12 @@ check_PROGRAMS =						\
 	gusb-self-test
 
 gusb_self_test_SOURCES =					\
+	$(libgusb_la_SOURCES)					\
 	gusb-self-test.c
 
 gusb_self_test_LDADD =						\
 	$(GLIB_LIBS)						\
-	$(USB_LIBS)						\
-	$(lib_LTLIBRARIES)
+	$(USB_LIBS)
 
 gusb_self_test_CFLAGS = $(AM_CFLAGS) $(WARNINGFLAGS_C)
 
@@ -75,17 +78,15 @@ if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
 
 INTROSPECTION_GIRS = GUsb-1.0.gir
+INTROSPECTION_SCANNER_ENV = CC="$(CC)"
 
 GUsb-1.0.gir: libgusb.la
 
 GUsb_1_0_gir_PACKAGES = glib-2.0 gobject-2.0 libusb-1.0
-if HAVE_GUDEV
-GUsb_1_0_gir_PACKAGES += gudev-1.0
-endif
 GUsb_1_0_gir_EXPORT_PACKAGES = gusb
 GUsb_1_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gio-2.0
 GUsb_1_0_gir_LIBS = libgusb.la
-GUsb_1_0_gir_CFLAGS = -I$(top_srcdir) -I$(top_builddir) -DG_USB_API_IS_SUBJECT_TO_CHANGE -DGUSB_COMPILATION
+GUsb_1_0_gir_CFLAGS = -I$(top_srcdir) -I$(top_builddir) -DGUSB_COMPILATION
 GUsb_1_0_gir_FILES = $(libgusb_la_SOURCES) $(libgusbbase_include_HEADERS)
 GUsb_1_0_gir_SCANNERFLAGS = --c-include "gusb.h"
 
@@ -112,6 +113,7 @@ vapi_DATA = $(VAPIGEN_VAPIS)
 endif
 
 EXTRA_DIST =							\
+	libgusb.ver						\
 	gusb-version.h.in					\
 	gusb.pc.in
 

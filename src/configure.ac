@@ -2,8 +2,8 @@
 AC_PREREQ(2.63)
 
 m4_define([gusb_major_version], [0])
-m4_define([gusb_minor_version], [1])
-m4_define([gusb_micro_version], [6])
+m4_define([gusb_minor_version], [2])
+m4_define([gusb_micro_version], [9])
 m4_define([gusb_version],
           [gusb_major_version.gusb_minor_version.gusb_micro_version])
 
@@ -41,7 +41,7 @@ AC_SUBST(G_USB_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=2
-LT_REVISION=3
+LT_REVISION=10
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -98,19 +98,8 @@ AC_SUBST(WARNINGFLAGS_C)
 dnl ---------------------------------------------------------------------------
 dnl - Check library dependencies
 dnl ---------------------------------------------------------------------------
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.28.0 gobject-2.0 gthread-2.0 gio-2.0 >= 2.25.9)
-
-dnl **** Check for GUDEV ****
-AC_ARG_ENABLE(gudev, AS_HELP_STRING([--enable-gudev],[Enable GUDEV support]),
-	      enable_gudev=$enableval, enable_gudev=yes)
-if test x$enable_gudev != xno; then
-	PKG_CHECK_MODULES(GUDEV, gudev-1.0)
-	AC_DEFINE(HAVE_GUDEV,1,[Use GUDEV support for hardware])
-fi
-AM_CONDITIONAL(HAVE_GUDEV, test x$enable_gudev = xyes)
-
-dnl **** Check for libusb1 ****
-PKG_CHECK_MODULES(USB, libusb-1.0 >= 1.0.0)
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.38.0 gobject-2.0 gthread-2.0 gio-2.0)
+PKG_CHECK_MODULES(USB, libusb-1.0 >= 1.0.19)
 
 dnl ---------------------------------------------------------------------------
 dnl - Build self tests
@@ -145,5 +134,4 @@ echo "
         cflags:                    ${CFLAGS}
         cppflags:                  ${CPPFLAGS}
         Building unit tests:       ${enable_tests}
-        GUDEV support:             ${enable_gudev}
 "
